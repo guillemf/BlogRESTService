@@ -1,0 +1,83 @@
+#%RAML 1.0
+title: Blog
+version: v1
+baseUri: 
+types: 
+  Post-date:
+    type: date-only
+    example: 2017-06-20
+  Title:
+    type: string
+    minLength: 16
+    maxLength: 255
+    example: My first post title
+  PostContent:
+    type: string
+    example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc.
+  Post:
+    type: object
+    properties: 
+      date: Post-date
+      title: Title
+      content: PostContent
+/posts:
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: [Post]
+  post:
+    body: 
+      application/json:
+        example: |
+          {
+            "date": 2017-06-20,
+            "title": "Create RAML specifications is easy and funny",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc."
+          }
+    responses: 
+      201:
+        headers: 
+          Location:
+            example: "/api/blog/posts/2017-06-20"
+      400:
+        body: 
+          application/json:
+            example: |
+              {
+                "Error": "Bad formated date"
+              }
+      409:
+        body: 
+          application/json:
+            example: |
+              {
+                "Error": "There is a post in that date"
+              }
+  /{date}:
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "date": 2017-06-20,
+                  "title": "Create RAML specifications is easy and funny",
+                  "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc."
+                }
+        404:
+          body: 
+            application/json:
+              description: "Empty json returned"
+    delete:
+      responses: 
+        204:
+          description: "Successfull response with no content"
+        404:
+          body: 
+            application/json:
+              description: "Empty json returned"
+
+              
