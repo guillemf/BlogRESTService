@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/json'
 require 'sinatra/namespace'
 require 'json'
 
@@ -17,11 +18,12 @@ namespace '/api/v1' do
     end
 
     post '/posts' do
-        if !valid_json(request.body.read)
+        requestBody = request.body.read
+        if !valid_json?(requestBody)
             halt 400, json({ "Error": "Bad formated request" })
         end
 
-        new_post = JSON.parse(request.body.read)
+        new_post = JSON.parse(requestBody)
         posts = load_posts
 
         if find_post(posts, new_post["date"]) != nil
