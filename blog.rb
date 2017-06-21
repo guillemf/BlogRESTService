@@ -45,6 +45,21 @@ namespace '/api/v1' do
         post.to_json
     end
 
+    put '/posts/:date' do |date|
+        posts = load_posts
+        post = find_post(posts, date)
+
+        if post == nil
+            halt 404, json({})
+        end
+
+        posts.delete(post)
+        posts.push(new_post)
+        save_posts(posts)
+
+        new_post.to_json
+    end
+
     delete '/posts/:date' do |date|
         posts = load_posts
         post = find_post(posts, date)

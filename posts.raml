@@ -1,8 +1,8 @@
 #%RAML 1.0
 title: Blog
 version: v1
-baseUri: 
-types: 
+baseUri: http://localhost:9000/api/v1
+types:
   Post-date:
     type: date-only
     example: 2017-06-20
@@ -16,19 +16,19 @@ types:
     example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc.
   Post:
     type: object
-    properties: 
+    properties:
       date: Post-date
       title: Title
       content: PostContent
 /posts:
   get:
-    responses: 
+    responses:
       200:
-        body: 
+        body:
           application/json:
             type: [Post]
   post:
-    body: 
+    body:
       application/json:
         example: |
           {
@@ -36,20 +36,20 @@ types:
             "title": "Create RAML specifications is easy and funny",
             "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc."
           }
-    responses: 
+    responses:
       201:
-        headers: 
+        headers:
           Location:
             example: "/api/blog/posts/2017-06-20"
       400:
-        body: 
+        body:
           application/json:
             example: |
               {
                 "Error": "Bad formated date"
               }
       409:
-        body: 
+        body:
           application/json:
             example: |
               {
@@ -57,9 +57,9 @@ types:
               }
   /{date}:
     get:
-      responses: 
+      responses:
         200:
-          body: 
+          body:
             application/json:
               example: |
                 {
@@ -68,16 +68,14 @@ types:
                   "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor turpis urna, sed mollis augue viverra id. Vestibulum et vestibulum nunc."
                 }
         404:
-          body: 
+          body:
             application/json:
               description: "Empty json returned"
     delete:
-      responses: 
+      responses:
         204:
           description: "Successfull response with no content"
         404:
-          body: 
+          body:
             application/json:
               description: "Empty json returned"
-
-              
